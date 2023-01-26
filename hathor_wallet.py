@@ -1,23 +1,50 @@
+from typing import Optional, List
+
 import requests
 from urllib import parse
 
 
-wallet_id = 'wallet-mailson'
-wallet_seed = 'borrow coast margin lunar unique sand typical manage gold century omit become wrong ride angle foil recycle over honey tobacco camp pistol ten grape'
-wallet_base_url = 'https://hathor-wallet-headless.mailsonnascin.repl.co/'
-
-
-def start_wallet():
-    url = parse.urljoin(wallet_base_url, '/start')
-    headers = {
-    'X-API-KEY': 'KEY-MAILSON-NASCIN',
+configs: dict = {
+    'headers': {
+        'X-API-KEY': '123456',
+        'X-Wallet-Id': 'mailson-nascin',
+    },
+    'data': {
+        'wallet-id': 'mailson-nascin',
+        'seed': 'coral quarter dismiss notice sorry shoulder length sting marine arrange portion split spawn knee zone cover rebel ring code just version afford same fossil',
     }
-    data = {
-        'wallet-id': wallet_id,
-        'seed': wallet_seed,
-    }
-    response = requests.post(url=url, headers=headers, data=data)
-    print(response.json())
+}
 
+class HathorWallet:
 
-start_wallet()
+    def __init__(
+        self, 
+        wallet_base_url: str = 'https://hathor-wallet-headless-replit.mailsonnascin.repl.co/', 
+        **configs
+        ):
+        self.wallet_base_url: str = wallet_base_url
+        self.configs: dict = configs
+
+    def start(self):
+        url = parse.urljoin(self.wallet_base_url, '/start')
+        response = requests.post(url=url, headers=self.configs.get('headers'), data=self.configs.get('data'))
+        
+        return response.json()
+
+    def status(self):
+        url = parse.urljoin(self.wallet_base_url, '/wallet/status')
+        response = requests.get(url=url, headers=self.configs.get('headers'), data=self.configs.get('data'))
+        
+        return response.json()
+
+    def balance(self):
+        url = parse.urljoin(self.wallet_base_url, '/wallet/balance')
+        response = requests.get(url=url, headers=self.configs.get('headers'))
+        
+        return response.json()
+            
+    def stop(self):
+        url = parse.urljoin(self.wallet_base_url, '/wallet/stop')
+        response = requests.post(url=url, headers=self.configs.get('headers'))
+        
+        return response.json()
