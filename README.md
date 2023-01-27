@@ -1,1 +1,1 @@
-# hathor-wallet-headless-lib
+# hathor-wallet-lib
