@@ -22,6 +22,9 @@ class HathorWallet:
             if response.status_code != 200:
                 raise HathorWalletError('Erro stating wallet.')
 
+            from time import sleep
+            sleep(5)
+            
             return response.json()
 
         except:

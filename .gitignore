@@ -109,7 +109,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-_hathor-env/
+_env/
 
 # Spyder project settings
 .spyderproject

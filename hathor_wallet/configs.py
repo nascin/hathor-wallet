@@ -1,15 +1,3 @@
-'''
-configs: dict = {
-    'headers': {
-        'X-API-KEY': '123456',
-        'X-Wallet-Id': 'mailson-nascin',
-    },
-    'data': {
-        'wallet-id': 'mailson-nascin',
-        'seed': 'coral quarter dismiss notice sorry shoulder length sting marine arrange portion split spawn knee zone cover rebel ring code just version afford same fossil',
-    }
-}
-'''
 from typing import Dict
 
 class Configs:
@@ -29,7 +17,7 @@ class Configs:
         self.seed_key = seed_key
         self.seed = seed
 
-    def start(self) -> Dict[str, str]:
+    def setup(self) -> Dict[str, str]:
 
         configs: Dict[str, str] = {
             'wallet_base_url': self.wallet_base_url,
