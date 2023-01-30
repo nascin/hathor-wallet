@@ -27,3 +27,7 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/nascin/hathor-wallet"
 "Bug Tracker" = "https://github.com/nascin/hathor-wallet/issues"
+"Source Code" = "https://github.com/nascin/hathor-wallet"
+
+[options.packages.find]
+exclude = ["tests"]

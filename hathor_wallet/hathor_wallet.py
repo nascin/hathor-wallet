@@ -14,7 +14,7 @@ class HathorWallet:
         ):
         self.configs: dict = configs
 
-    def start(self):
+    def start(self) -> Dict[bool]:
         try:
             url = parse.urljoin(self.configs.get('wallet_base_url'), '/start')
             response = requests.post(url=url, headers=self.configs.get('headers'), data=self.configs.get('data'))
@@ -30,7 +30,7 @@ class HathorWallet:
         except:
             raise HathorWalletError('Error in the request.')
 
-    def status(self):
+    def status(self) -> Dict[str, dict]:
         try:
             url = parse.urljoin(self.configs.get('wallet_base_url'), '/wallet/status')
             response = requests.get(url=url, headers=self.configs.get('headers'), data=self.configs.get('data'))
@@ -42,7 +42,7 @@ class HathorWallet:
         except:
             raise HathorWalletError('Error in the request.')
 
-    def balance(self):
+    def balance(self) -> Dict:
         # Not implemented other UID.
         try:
             url = parse.urljoin(self.configs.get('wallet_base_url'), '/wallet/balance')
@@ -56,7 +56,7 @@ class HathorWallet:
         except:
             raise HathorWalletError('Error in the request.')
             
-    def stop(self):
+    def stop(self) -> Dict[bool]:
         try:
             url = parse.urljoin(self.configs.get('wallet_base_url'), '/wallet/stop')
             response = requests.post(url=url, headers=self.configs.get('headers'))
@@ -69,7 +69,7 @@ class HathorWallet:
         except:
             raise HathorWalletError('Error in the request.')
 
-    def current_address(self, mark_as_used: Optional[str] = None):
+    def current_address(self, mark_as_used: Optional[str] = None) -> str:
         params: Optional[Dict[str, str]] = None
 
         if mark_as_used:
@@ -94,6 +94,54 @@ class HathorWallet:
             
             if response.status_code != 200:
                 raise HathorWalletError(f'Error return all generated addresses of the wallet.')
+
+            return response.json()
+            
+        except:
+            raise HathorWalletError('Error in the request.')
+
+    def simple_send_tx(
+        self, 
+        address: str, 
+        value: int, 
+        token: Optional[str] = None, 
+        change_address: Optional[str] = None
+        ) -> Dict[bool, str, Dict]:
+
+        data: Dict = {
+            'address': address,
+            'value': value
+        }
+
+        if token is not None:
+            data['token'] = token
+        if change_address is not None:
+            data['change_address'] = change_address
+
+        try:
+            url = parse.urljoin(self.configs.get('wallet_base_url'), '/wallet/simple-send-tx')
+            response = requests.post(url=url, headers=self.configs.get('headers')['X-Wallet-Id'], data=data)
+            
+            if response.status_code != 200:
+                raise HathorWalletError(f'Error sending transaction.')
+
+            return response.json()
+            
+        except:
+            raise HathorWalletError('Error in the request.')
+
+    def tx_history(self, limit: int = None) -> Dict[Dict, Dict]:
+        params: Dict[str, int] = None
+
+        if limit:
+            params = {'limit': limit}
+
+        try:
+            url = parse.urljoin(self.configs.get('wallet_base_url'), '/wallet/tx-history')
+            response = requests.get(url=url, headers=self.configs.get('headers')['X-Wallet-Id'], params=params)
+            
+            if response.status_code != 200:
+                raise HathorWalletError(f'Error return transactions.')
 
             return response.json()
             
