@@ -58,10 +58,10 @@ class TestHathorWallet:
 
     def test_simple_send_tx(self, wallet):
         ''' Teste a send transaction'''
-        response = wallet.simple_send_tx(address='hathor_address', value=1)
+        response = wallet.simple_send_tx(address='hathor_address', value=1) # 
         assert response.get('success') == True
 
     def test_tx_history(self, wallet):
         ''' Teste get transactions'''
         response = wallet.tx_history()
-        assert response == Dict[dict]
+        assert response == Dict[dict, dict]
